@@ -52,7 +52,9 @@ func leastInterval(tasks []byte, n int) int {
 		for i:=0;i<len(p);i++ {
 			if len(subSeq) > n {
 				subSeq = []byte{}
-				sort.Sort(sort.Reverse(p))
+				if p[n%len(p)].Value < p[(n+1)%len(p)].Value {
+					sort.Sort(sort.Reverse(p))
+				}
 				break
 			}
 			if zeros == len(p) {
