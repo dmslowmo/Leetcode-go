@@ -1,20 +1,15 @@
 package main
 
 import (
-	"strings"
 	"fmt"
 	"sort"
+	"strings"
 )
 
-func hasNoOverlapChar(word1 string, word2 string) bool {
-	//for _, char := range word1 {
-	//	if strings.Contains(word2, string(char)) {
-	//		return false
-	//	}
-	//}
-	//return true
+func hasNoOverlapChar(word1 string, word2 string, masks map[string]uint) bool {
 	fmt.Println(word1, word2, strings.ContainsAny(word1, word2))
-	return !strings.ContainsAny(word1, word2)
+	//return !strings.ContainsAny(word1, word2)
+	return masks[word1] & masks[word2] == 0
 }
 
 // A data structure to hold key/value pairs
@@ -46,15 +41,20 @@ func maxProduct(words []string) int {
 
 	sort.Sort(sort.Reverse(p)) // sorted from longest to shortest word
 
+	masks := make(map[string]uint, len(words))
+	for i:=0;i<len(words);i++ {
+		word := words[i]
+		for _,char := range word {
+			masks[word] |= 1 << uint(char - 'a')
+		}
+	}
+
 	max := 0
 	limit := len(p) - 1
 	for i:=0;i<=limit;i++ {
-		for j := 0; j <= limit; j++ {
-			if i == j {
-				continue
-			}
+		for j := i+1; j <= limit; j++ {
 			if len(p[i].Key) * len(p[j].Key) > max {
-				if hasNoOverlapChar(p[i].Key, p[j].Key) {
+				if hasNoOverlapChar(p[i].Key, p[j].Key, masks) {
 					max = len(p[i].Key) * len(p[j].Key)
 					limit = j
 					break
@@ -68,8 +68,5 @@ func maxProduct(words []string) int {
 }
 
 func main() {
-	fmt.Println(hasNoOverlapChar("hello", "ole"))
-	fmt.Println(hasNoOverlapChar("hello", "abba"))
-
 	fmt.Println(maxProduct([]string{"abcw","baz","foo","bar","xtfn","abcdef"}))
 }
