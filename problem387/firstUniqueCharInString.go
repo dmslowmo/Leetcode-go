@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"math"
-	"strings"
+	//"math"
+	//"strings"
 )
 
 func firstUniqueChar(s string) int {
@@ -14,20 +14,26 @@ func firstUniqueChar(s string) int {
 	for i:=0;i<len(s);i++ {
 		count[int(s[i])-97]++
 	}
-	min := math.MaxInt64
-	for index,v := range count {
-		if v == 1 {
-			pos := strings.IndexByte(s, byte(index+97))
-			if pos < min {
-				min = pos
-			}
+	//min := math.MaxInt64
+	//for index,v := range count {
+	//	if v == 1 {
+	//		pos := strings.IndexByte(s, byte(index+97))
+	//		if pos < min {
+	//			min = pos
+	//		}
+	//	}
+	//}
+	//
+	//if min == math.MaxInt64 {
+	//	return -1
+	//}
+	//return min
+	for index, v := range s {
+		if count[v - 'a'] == 1 {
+			return index
 		}
 	}
-
-	if min == math.MaxInt64 {
-		return -1
-	}
-	return min
+	return -1
 }
 
 func main() {
