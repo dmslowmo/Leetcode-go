@@ -3,31 +3,30 @@ package main
 import (
 	"fmt"
 	"math"
+	"strings"
 )
 
 func firstUniqueChar(s string) int {
 	if s == "" {
 		return -1
 	}
-	nonRepeated := make(map[byte]int)
+	var count [26]int
 	for i:=0;i<len(s);i++ {
-		if _, ok := nonRepeated[s[i]]; ok {
-			nonRepeated[s[i]] = -1
-			continue
-		}
-		nonRepeated[s[i]] = i
+		count[int(s[i])-97]++
 	}
 	min := math.MaxInt64
-	for _,v := range nonRepeated {
-		if v != -1 && v < min {
-			min = v
+	for index,v := range count {
+		if v == 1 {
+			pos := strings.IndexByte(s, byte(index+97))
+			if pos < min {
+				min = pos
+			}
 		}
 	}
 
 	if min == math.MaxInt64 {
 		return -1
 	}
-
 	return min
 }
 
