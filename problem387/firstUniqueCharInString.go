@@ -12,7 +12,7 @@ func firstUniqueChar(s string) int {
 	}
 	var count [26]int
 	for i:=0;i<len(s);i++ {
-		count[int(s[i])-97]++
+		count[int(s[i])-'a']++
 	}
 	//min := math.MaxInt64
 	//for index,v := range count {
